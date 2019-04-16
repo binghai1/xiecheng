@@ -5,10 +5,18 @@ class TabNavigator extends StatefulWidget {
 }
 
 class _TabNavigatorState extends State<TabNavigator> {
+  final PageController controller = PageController(
+    initialPage: 0,
+  );
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      body: PageView(
+        controller:controller,
+        children: <Widget>[
+          
+        ],
+      ),
     );
   }
 }
