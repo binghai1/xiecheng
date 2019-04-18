@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:xiecheng/dao/home_dao.dart';
+import 'package:xiecheng/model/common_model.dart';
 import 'dart:convert';
 
 import 'package:xiecheng/model/home_model.dart';
+import 'package:xiecheng/widget/local_nav.dart';
 const APPBAR_SCROLL_OFFSET=100;
 class HomePage extends StatefulWidget {
   @override
@@ -20,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     'https://dimg04.c-ctrip.com/images/700u0r000000gxvb93E54_810_235_85.jpg',
     'https://dimg04.c-ctrip.com/images/700c10000000pdili7D8B_780_235_57.jpg'
   ];
-  var resultString="";
+  List<CommonModel> localNavList;
   double _appBarAlpha=0;
   _onScroll(offset) {
     double alpha=offset/APPBAR_SCROLL_OFFSET;
@@ -37,17 +39,19 @@ class _HomePageState extends State<HomePage> {
       try {
         HomeModel model=await HomeDao.fetch();
         setState(() {
-         resultString=json.encode(model.config);
+          print(model);
+         localNavList=model.localNavList;
         });
       } catch (e) {
          setState(() {
-         resultString=e.toString();
+           print(e);
         });
       }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor:Color(0xfff2f2f2),
         body: Stack(
         children: <Widget>[
         MediaQuery.removePadding(
@@ -74,10 +78,14 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 7, 10, 7),
+                      child: LocalNav(localNavList:localNavList),
+                    ),
                     Container(
                       height: 800,
                       child: ListTile(
-                        title: Text(resultString),
+                        title: Text("resultString"),
                       ),
                     )
                   ],
